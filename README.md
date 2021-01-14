@@ -1,6 +1,6 @@
-# StartProject
+# Mevis
 ### Overview
-Starter project for android application. Project includes frequently used libraries.
+Android app for swimmer school.
 ### Features
 Kotlin DSL for build scripts. Codestyle settings (ktlint, detekt).
 ### Libraries and dependencies
