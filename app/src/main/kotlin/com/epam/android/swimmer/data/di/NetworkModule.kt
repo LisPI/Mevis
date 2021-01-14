@@ -1,7 +1,7 @@
 package com.epam.android.swimmer.data.di
 
 import by.kirich1409.result.retrofit.ResultAdapterFactory
-import com.epam.android.swimmer.data.api.CatsService
+import com.epam.android.swimmer.data.api.ApiService
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -26,7 +26,7 @@ object NetworkModule {
         val converterFactory =
             json.asConverterFactory("application/json".toMediaType())
         return Retrofit.Builder()
-            .baseUrl("https://api.thecatapi.com")
+            .baseUrl("https://api.moyklass.com/")
             .addConverterFactory(converterFactory)
             .addCallAdapterFactory(ResultAdapterFactory())
             .build()
@@ -34,7 +34,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideCatsService(retrofit: Retrofit): CatsService {
-        return retrofit.create(CatsService::class.java)
+    fun provideCatsService(retrofit: Retrofit): ApiService {
+        return retrofit.create(ApiService::class.java)
     }
 }
