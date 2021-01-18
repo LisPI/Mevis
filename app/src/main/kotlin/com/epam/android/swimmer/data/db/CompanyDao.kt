@@ -7,10 +7,10 @@ import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface CatsDao {
+interface CompanyDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addCats(cats: List<Cat>)
+    suspend fun saveCompany(company: Company)
 
-    @Query("SELECT * FROM cats")
-    fun getCats(): Flow<List<Cat>>
+    @Query("SELECT * FROM company")
+    fun getCompany(): Flow<Company>
 }

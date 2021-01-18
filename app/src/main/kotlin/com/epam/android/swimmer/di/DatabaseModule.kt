@@ -1,9 +1,9 @@
-package com.epam.android.swimmer.data.di
+package com.epam.android.swimmer.di
 
 import android.content.Context
 import androidx.room.Room
 import com.epam.android.swimmer.data.db.AppDatabase
-import com.epam.android.swimmer.data.db.CatsDao
+import com.epam.android.swimmer.data.db.CompanyDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,7 +26,7 @@ object DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideCatsDao(database: AppDatabase): CatsDao {
-        return database.getCatsDao()
+    fun provideCatsDao(database: AppDatabase): CompanyDao {
+        return database.getCompanyDao()
     }
 }

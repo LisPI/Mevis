@@ -1,4 +1,4 @@
-package com.epam.android.swimmer.data.di
+package com.epam.android.swimmer.di
 
 import by.kirich1409.result.retrofit.ResultAdapterFactory
 import com.epam.android.swimmer.data.api.ApiService

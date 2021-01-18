@@ -23,8 +23,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         super.onViewCreated(view, savedInstanceState)
 
         lifecycleScope.launch {
-            viewModel.loginData.collect {
-                binding.textView.text = it
+            viewModel.company.collect {
+                it?.let {
+                    binding.textView.text = "${it.name} ${it.phone}"
+                }
             }
         }
 

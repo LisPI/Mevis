@@ -1,7 +1,7 @@
-package com.epam.android.swimmer.data.di
+package com.epam.android.swimmer.di
 
-import com.epam.android.swimmer.data.repository.CatsRepository
-import com.epam.android.swimmer.data.repository.CatsRepositoryImpl
+import com.epam.android.swimmer.data.repository.CompanyRepository
+import com.epam.android.swimmer.data.repository.CompanyRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -13,5 +13,5 @@ import javax.inject.Singleton
 interface RepositoryModule {
     @Binds
     @Singleton
-    fun bindCatsRepository(repository: CatsRepositoryImpl): CatsRepository
+    fun bindCatsRepository(repository: CompanyRepositoryImpl): CompanyRepository
 }
