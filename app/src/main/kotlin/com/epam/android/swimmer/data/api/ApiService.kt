@@ -19,4 +19,10 @@ interface ApiService {
     suspend fun lkSettings(
         @Header("Referer") type: String = ORIGIN
     ): Result<LkSettings>
+
+    @GET("v1/user/baseInfo")
+    suspend fun baseInfo(
+        @Header("Referer") type: String = ORIGIN,
+        @Header("x-csrf-token") authToken: String
+    ): Result<BaseInfo>
 }
