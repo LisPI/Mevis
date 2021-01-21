@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/profileFragment"
+        android:title="@string/profile"
+        android:icon="@drawable/ic_android_black_24dp"/>
+
+    <item android:id="@+id/scheduleFragment"
+        android:title="@string/schedule"
+        android:icon="@drawable/ic_android_black_24dp"/>
+
+    <item android:id="@+id/poolsFragment"
+        android:title="@string/pools"
+        android:icon="@drawable/ic_android_black_24dp"/>
+
+    <item android:id="@+id/clubFragment"
+        android:title="@string/club"
+        android:icon="@drawable/ic_android_black_24dp"/>
+
+</menu>

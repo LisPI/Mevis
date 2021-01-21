@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_nav_graph"
+    app:startDestination="@id/profileFragment">
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.epam.android.swimmer.ui.home.BlankFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_blank" />
+    <fragment
+        android:id="@+id/scheduleFragment"
+        android:name="com.epam.android.swimmer.ui.home.BlankFragment"
+        android:label="Schedule"
+        tools:layout="@layout/fragment_blank" />
+    <fragment
+        android:id="@+id/poolsFragment"
+        android:name="com.epam.android.swimmer.ui.home.BlankFragment"
+        android:label="Pools"
+        tools:layout="@layout/fragment_blank" />
+    <fragment
+        android:id="@+id/clubFragment"
+        android:name="com.epam.android.swimmer.ui.home.BlankFragment"
+        android:label="Club"
+        tools:layout="@layout/fragment_blank" />
+
+</navigation>
