@@ -7,12 +7,12 @@
     android:layout_height="match_parent"
     tools:context="ui.home.BlankFragment">
 
-    <Button
+    <TextView
         android:id="@+id/buttonToTest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="To example"
+        android:text="@string/app_name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
