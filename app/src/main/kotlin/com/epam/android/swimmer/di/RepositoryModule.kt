@@ -13,5 +13,5 @@ import javax.inject.Singleton
 interface RepositoryModule {
     @Binds
     @Singleton
-    fun bindCatsRepository(repository: CompanyRepositoryImpl): CompanyRepository
+    fun bindCompanyRepository(repository: CompanyRepositoryImpl): CompanyRepository
 }

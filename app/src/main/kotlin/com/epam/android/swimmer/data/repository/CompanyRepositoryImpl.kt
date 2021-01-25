@@ -55,10 +55,9 @@ class CompanyRepositoryImpl @Inject constructor(
 
     suspend fun testCookie() {
         withContext(Dispatchers.IO) {
-            val retrofit = NetworkModule.provideCatsService(NetworkModule.provideRetrofit(appContext))
-            val loginResult = retrofit.authorizeUser(AuthObject("paschka.lis@gmail.com", "12qwasZ"))
+            val loginResult = api.authorizeUser(AuthObject("paschka.lis@gmail.com", "12qwasZ"))
             if (loginResult.isSuccess()) {
-                val br = retrofit.baseInfo(authToken = loginResult.asSuccess().value.csrfToken)
+                val br = api.baseInfo(authToken = loginResult.asSuccess().value.csrfToken)
                 if (br.isSuccess())
                     Log.d("123", br.toString())
             }

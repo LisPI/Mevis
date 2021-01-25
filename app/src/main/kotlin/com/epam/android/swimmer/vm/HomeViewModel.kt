@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import by.kirich1409.result.asSuccess
 import by.kirich1409.result.isSuccess
+import com.epam.android.swimmer.SharedPrefSessionSource
 import com.epam.android.swimmer.data.api.AuthObject
 import com.epam.android.swimmer.data.db.Company
 import com.epam.android.swimmer.di.NetworkModule
@@ -30,7 +31,7 @@ class HomeViewModel @ViewModelInject constructor(
         //FIXME just for fun only!
         viewModelScope.launch {
 
-//            val retrofit = NetworkModule.provideCatsService(NetworkModule.provideRetrofit())
+//            val retrofit = NetworkModule.provideCompanyService(NetworkModule.provideRetrofit(SharedPrefSessionSource()))
 //            val loginResult = retrofit.authorizeUser(AuthObject("paschka.lis@gmail.com", "12qwasZ"))
 //            if (loginResult.isSuccess()) {
 //                val br = retrofit.baseInfo(authToken = loginResult.asSuccess().value.csrfToken)

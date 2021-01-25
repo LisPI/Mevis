@@ -1,14 +1,12 @@
 package com.epam.android.swimmer.di
 
-import android.content.Context
-import androidx.preference.PreferenceManager
 import by.kirich1409.result.retrofit.ResultAdapterFactory
+import com.epam.android.swimmer.data.SessionSource
 import com.epam.android.swimmer.data.api.ApiService
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
@@ -23,7 +21,7 @@ object NetworkModule {
     @Provides
     @Singleton
     @ExperimentalSerializationApi
-    fun provideRetrofit(@ApplicationContext appContext: Context): Retrofit {
+    fun provideRetrofit(session: SessionSource): Retrofit {
         val json = Json {
             ignoreUnknownKeys = true
         }
@@ -32,33 +30,18 @@ object NetworkModule {
 
         val setCookieHeader = "Set-Cookie"
         val cookieHeader = "Cookie"
-        val cookiesKey = "appCookies"
         val client = OkHttpClient.Builder()
             .addInterceptor { chain ->
-
                 val originalResponse = chain.proceed(chain.request())
-
                 if (originalResponse.headers(setCookieHeader).isNotEmpty()) {
-                    val cookies: LinkedHashSet<String> = LinkedHashSet()
-
-                    originalResponse.headers(setCookieHeader).forEach {
-                        cookies.add(it)
-                    }
-                    PreferenceManager
-                        .getDefaultSharedPreferences(appContext)
-                        .edit()
-                        .putStringSet(cookiesKey, cookies)
-                        .apply()
+                    session.saveCookie(originalResponse.headers(setCookieHeader).toHashSet())
                 }
                 originalResponse
             }
             .addInterceptor { chain ->
                 val builder = chain.request().newBuilder()
-                val preferences = PreferenceManager
-                    .getDefaultSharedPreferences(appContext)
-                    .getStringSet(cookiesKey, HashSet()) as HashSet<String>
 
-                preferences.forEach {
+                session.getSavedCookie().forEach {
                     builder.addHeader(cookieHeader, it)
                 }
 
@@ -76,7 +59,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideCatsService(retrofit: Retrofit): ApiService {
+    fun provideCompanyService(retrofit: Retrofit): ApiService {
         return retrofit.create(ApiService::class.java)
     }
 }
