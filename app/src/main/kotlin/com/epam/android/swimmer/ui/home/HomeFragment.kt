@@ -24,14 +24,40 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         lifecycleScope.launch {
             viewModel.company.collect {
-                it?.let {
+                it.let {
                     binding.textView.text = "${it.name} ${it.phone}"
                 }
             }
         }
 
-        binding.button.setOnClickListener {
+        lifecycleScope.launch {
+            viewModel.user.collect {
+                it.let {
+                    binding.textView.text = "${it.name} ${it.balance}"
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.login.collect {
+                binding.textView2.text = it
+            }
+        }
+
+        binding.loginButton.setOnClickListener {
             viewModel.login()
+        }
+
+        binding.logoutButton.setOnClickListener {
+            viewModel.logout()
+        }
+
+        binding.mevisinfoButton.setOnClickListener {
+            viewModel.getCompany()
+        }
+
+        binding.myinfoButton.setOnClickListener {
+            viewModel.getUser()
         }
     }
 }

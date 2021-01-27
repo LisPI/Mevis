@@ -10,17 +10,24 @@ class SharedPrefSessionSource @Inject constructor(@ApplicationContext val contex
 
     private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
     private val cookiesKey = "appCookies"
+    private val tokenKey = "token"
 
-    override fun getSavedSession() {
-        TODO("Not yet implemented")
+    override fun getSavedSession(): String {
+        return sharedPreferences.getString(tokenKey, null) ?: ""
     }
 
-    override fun saveSession() {
-        TODO("Not yet implemented")
+    override fun saveSession(session: String) {
+        with(sharedPreferences.edit()) {
+            putString(tokenKey, session)
+            apply()
+        }
     }
 
     override fun deleteSession() {
-        TODO("Not yet implemented")
+        with(sharedPreferences.edit()) {
+            remove(tokenKey)
+            apply()
+        }
     }
 
     override fun getSavedCookie(): Set<String> {

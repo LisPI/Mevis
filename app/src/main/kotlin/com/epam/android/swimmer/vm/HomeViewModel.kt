@@ -1,43 +1,79 @@
 package com.epam.android.swimmer.vm
 
-import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import by.kirich1409.result.asSuccess
 import by.kirich1409.result.isSuccess
-import com.epam.android.swimmer.SharedPrefSessionSource
+import com.epam.android.swimmer.data.SessionSource
+import com.epam.android.swimmer.data.api.ApiService
 import com.epam.android.swimmer.data.api.AuthObject
+import com.epam.android.swimmer.data.api.UsersItem
 import com.epam.android.swimmer.data.db.Company
-import com.epam.android.swimmer.di.NetworkModule
 import com.epam.android.swimmer.domain.GetCompanyUseCase
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class HomeViewModel @ViewModelInject constructor(
-    private val getCompanyUseCase: GetCompanyUseCase
+    private val getCompanyUseCase: GetCompanyUseCase,
+    private val api: ApiService, //FIXME delete after testing
+    private val session: SessionSource
 ) : ViewModel() {
 
-    private val _company = MutableStateFlow<Company?>(null)
-    val company: StateFlow<Company?> = _company
+    private val _company = Channel<Company>()
+    val company = _company.receiveAsFlow()
+
+    private val _user = Channel<UsersItem>()
+    val user = _user.receiveAsFlow()
+
+    private val _login = MutableStateFlow("")
+    val login: StateFlow<String> = _login
 
     fun login() {
-        viewModelScope.launch {
-            getCompanyUseCase.getCompany().collect { _company.value = it }
-        }
+//        viewModelScope.launch {
+//            getCompanyUseCase.getCompany().collect { _company.value = it }
+//        }
 
         //FIXME just for fun only!
         viewModelScope.launch {
 
-//            val retrofit = NetworkModule.provideCompanyService(NetworkModule.provideRetrofit(SharedPrefSessionSource()))
-//            val loginResult = retrofit.authorizeUser(AuthObject("paschka.lis@gmail.com", "12qwasZ"))
-//            if (loginResult.isSuccess()) {
-//                val br = retrofit.baseInfo(authToken = loginResult.asSuccess().value.csrfToken)
-//                if(br.isSuccess())
-//                    Log.d("123", br.toString())
-//            }
+            val loginResult = api.authorizeUser(AuthObject("paschka.lis@gmail.com", "12qwasZ"))
+            if (loginResult.isSuccess()) {
+                session.saveSession(loginResult.asSuccess().value.csrfToken)
+                _login.value = loginResult.asSuccess().value.csrfToken
+            }
         }
+    }
+
+    fun getCompany() {
+        viewModelScope.launch {
+            val lkSettings = api.lkSettings()
+            if (lkSettings.isSuccess()) {
+                val company = lkSettings.asSuccess().value.contacts
+                _company.send(Company(company.name
+                    ?: "", company.phone, company.email, company.full))
+                _login.value = "no token needed"
+
+            }
+        }
+    }
+
+    fun getUser() {
+        viewModelScope.launch {
+            val baseInfo = api.baseInfo(authToken = _login.value)
+            if (baseInfo.isSuccess()) {
+                _user.send(baseInfo.asSuccess().value.users?.first()!!)
+            } else
+                _login.value = "bad token"
+        }
+    }
+
+    fun logout() {
+        session.deleteSession()
+        session.deleteCookie()
+        _login.value = session.getSavedSession()
     }
 }

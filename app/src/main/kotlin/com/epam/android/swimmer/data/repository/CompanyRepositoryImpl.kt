@@ -53,19 +53,19 @@ class CompanyRepositoryImpl @Inject constructor(
         }
     }
 
-    suspend fun testCookie() {
-        withContext(Dispatchers.IO) {
-            val loginResult = api.authorizeUser(AuthObject("paschka.lis@gmail.com", "12qwasZ"))
-            if (loginResult.isSuccess()) {
-                val br = api.baseInfo(authToken = loginResult.asSuccess().value.csrfToken)
-                if (br.isSuccess())
-                    Log.d("123", br.toString())
-            }
-        }
-    }
+//    suspend fun testCookie() {
+//        withContext(Dispatchers.IO) {
+//            val loginResult = api.authorizeUser(AuthObject("paschka.lis@gmail.com", "12qwasZ"))
+//            if (loginResult.isSuccess()) {
+//                val br = api.baseInfo(authToken = loginResult.asSuccess().value.csrfToken)
+//                if (br.isSuccess())
+//                    Log.d("123", br.toString())
+//                api.baseInfo(authToken = loginResult.asSuccess().value.csrfToken)
+//            }
+//        }
+//    }
 
     override fun getCompany(): Flow<Company> {
-        scope.launch { testCookie()}
         return dao.getCompany()
     }
 }
